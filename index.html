@@ -353,6 +353,42 @@ addTap(elAtualizar, function() {
   });
 });
 
+/* ===== Gesto universal de saída: 2 toques rápidos em qualquer lugar da tela ===== */
+/* (ignora toques nos botões/controles, que continuam funcionando normalmente) */
+var lastTapTime = 0;
+var DOUBLE_TAP_MS = 450;
+function isControle(el) {
+  return !!(el && el.closest && el.closest('button, input, .icon-btn, #settings-overlay'));
+}
+function sairApp() {
+  if (rodando) parar();
+  if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+  try {
+    var u = new SpeechSynthesisUtterance('Saindo');
+    u.lang = 'pt-BR';
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  } catch(e) {}
+  setTimeout(function() {
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    } else if (window.history.length > 1) {
+      window.history.back();
+    }
+  }, 450);
+}
+document.addEventListener('click', function(e) {
+  if (isControle(e.target)) return;
+  var now = Date.now();
+  if (now - lastTapTime < DOUBLE_TAP_MS) {
+    lastTapTime = 0;
+    sairApp();
+  } else {
+    lastTapTime = now;
+  }
+});
+
 document.addEventListener('visibilitychange', function() {
   if (!document.hidden) {
     if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
