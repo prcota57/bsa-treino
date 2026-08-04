@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- BUILD: 2026-07-25-v8 -->
+<!-- BUILD: 2026-08-04-v9 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -131,10 +131,13 @@ colchao: `<svg viewBox="0 0 360 440" xmlns="http://www.w3.org/2000/svg">
   </defs>
   <g transform="translate(360,0) rotate(90)">
   <ellipse cx="240" cy="348" rx="175" ry="14" fill="rgba(0,0,0,0.35)"/>
+  <polygon points="60,80 380,40 420,180 100,220" fill="#FDD835"/>
   <polygon points="60,80 380,40 420,180 100,220" fill="url(#cTop)"/>
   <polygon points="80,90 340,55 370,120 110,155" fill="rgba(255,255,255,0.22)"/>
+  <polygon points="100,220 420,180 420,290 100,330" fill="#FBC02D"/>
   <polygon points="100,220 420,180 420,290 100,330" fill="url(#cFront)"/>
   <line x1="110" y1="255" x2="415" y2="235" stroke="rgba(0,0,0,0.12)" stroke-width="2.5" stroke-dasharray="14,9"/>
+  <polygon points="60,80 100,220 100,330 60,190" fill="#E65100"/>
   <polygon points="60,80 100,220 100,330 60,190" fill="url(#cSide)"/>
   <line x1="60" y1="80" x2="380" y2="40" stroke="rgba(0,0,0,0.15)" stroke-width="2"/>
   <line x1="380" y1="40" x2="420" y2="180" stroke="rgba(0,0,0,0.15)" stroke-width="2"/>
@@ -160,6 +163,7 @@ bolaazul: `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
     </radialGradient>
   </defs>
   <ellipse cx="200" cy="392" rx="148" ry="13" fill="rgba(0,0,0,0.4)"/>
+  <circle cx="200" cy="196" r="182" fill="#1133CC"/>
   <circle cx="200" cy="196" r="182" fill="url(#gBall)"/>
   <ellipse cx="148" cy="108" rx="78" ry="44" fill="rgba(255,255,255,0.28)" transform="rotate(-30,148,108)"/>
   <ellipse cx="110" cy="78" rx="34" ry="18" fill="rgba(255,255,255,0.22)" transform="rotate(-30,110,78)"/>
@@ -178,6 +182,7 @@ bolabranca: `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
     </clipPath>
   </defs>
   <ellipse cx="200" cy="392" rx="148" ry="13" fill="rgba(0,0,0,0.35)"/>
+  <circle cx="200" cy="200" r="182" fill="#F0F0F0"/>
   <circle cx="200" cy="200" r="182" fill="url(#gW2)"/>
   <g clip-path="url(#circ)">
     <polygon points="200,28 248,72 228,130 172,130 152,72" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
@@ -195,9 +200,9 @@ bolabranca: `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
 };
 
 var EQUIPS = [
-  { id:'colchao',    label:'COLCHÃO',     acao:'Role no colchão!',  bg:'#1A1200', freq:300, tipo:'triangle', dur:0.45 },
-  { id:'bolaazul',   label:'BOLA AZUL',   acao:'Pedale na bola!',   bg:'#000D2A', freq:180, tipo:'sine',     dur:0.55 },
-  { id:'bolabranca', label:'BOLA BRANCA', acao:'Cabeceie a bola!',  bg:'#1A1A2A', freq:700, tipo:'square',   dur:0.28 }
+  { id:'colchao',    label:'COLCHÃO',     acao:'Role no colchão!',  bg:'#1A1200', freq:196, tipo:'triangle', dur:0.42 },
+  { id:'bolaazul',   label:'BOLA AZUL',   acao:'Pedale na bola!',   bg:'#000D2A', freq:262, tipo:'triangle', dur:0.4  },
+  { id:'bolabranca', label:'BOLA BRANCA', acao:'Cabeceie a bola!',  bg:'#1A1A2A', freq:330, tipo:'triangle', dur:0.38 }
 ];
 
 var atual = -1, timer = null, rodando = false, audioCtx = null, wakeLock = null;
@@ -235,13 +240,24 @@ function desbloquearAudio() {
 function tocar(eq) {
   try {
     var ac = getAC(), now = ac.currentTime;
-    var o = ac.createOscillator(), g = ac.createGain();
-    o.type = eq.tipo; o.frequency.value = eq.freq;
-    g.gain.setValueAtTime(0.0001, now);
-    g.gain.linearRampToValueAtTime(0.9, now + 0.02);
-    g.gain.exponentialRampToValueAtTime(0.001, now + eq.dur);
-    o.connect(g); g.connect(masterGain);
-    o.start(now); o.stop(now + eq.dur + 0.05);
+    // som tipo "marimba": oscilador principal + parcial de oitava acima, com ataque tipo dedilhado (pluck)
+    var o1 = ac.createOscillator(), g1 = ac.createGain();
+    o1.type = eq.tipo;
+    o1.frequency.setValueAtTime(eq.freq * 1.08, now);
+    o1.frequency.exponentialRampToValueAtTime(eq.freq, now + 0.035);
+    g1.gain.setValueAtTime(0.0001, now);
+    g1.gain.linearRampToValueAtTime(0.9, now + 0.008);
+    g1.gain.exponentialRampToValueAtTime(0.001, now + eq.dur);
+    o1.connect(g1); g1.connect(masterGain);
+    o1.start(now); o1.stop(now + eq.dur + 0.05);
+
+    var o2 = ac.createOscillator(), g2 = ac.createGain();
+    o2.type = 'sine'; o2.frequency.value = eq.freq * 2;
+    g2.gain.setValueAtTime(0.0001, now);
+    g2.gain.linearRampToValueAtTime(0.35, now + 0.008);
+    g2.gain.exponentialRampToValueAtTime(0.001, now + eq.dur * 0.7);
+    o2.connect(g2); g2.connect(masterGain);
+    o2.start(now); o2.stop(now + eq.dur + 0.05);
   } catch(e) { console.warn('erro ao tocar som', e); }
 }
 
@@ -287,6 +303,7 @@ function trocar() {
   atual = prox; var eq = EQUIPS[atual];
   elBody.style.background = eq.bg;
   elSVG.innerHTML = SVGS[eq.id];
+  elSVG.style.display = 'none'; void elSVG.offsetHeight; elSVG.style.display = '';
   elLabel.textContent = eq.label;
   elAcao.textContent = eq.acao;
   tocar(eq);
