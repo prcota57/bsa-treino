@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- BUILD: 2026-08-04-v9 -->
+<!-- BUILD: 2026-08-04-v10 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -88,7 +88,89 @@ body.immersive #equip-acao { display: none; }
     <button id="btn-iniciar" type="button">INICIAR</button>
   </div>
   <div id="equip-card">
-    <div id="equip-svg-wrap"></div>
+    <div id="equip-svg-wrap">
+      <svg id="svg-colchao" style="display:none" viewBox="0 0 360 440" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="cTop" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#FFF176"/>
+            <stop offset="100%" stop-color="#FDD835"/>
+          </linearGradient>
+          <linearGradient id="cSide" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#F9A825"/>
+            <stop offset="100%" stop-color="#E65100"/>
+          </linearGradient>
+          <linearGradient id="cFront" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#FFEE58"/>
+            <stop offset="100%" stop-color="#FBC02D"/>
+          </linearGradient>
+        </defs>
+        <g transform="translate(360,0) rotate(90)">
+        <ellipse cx="240" cy="348" rx="175" ry="14" fill="rgba(0,0,0,0.35)"/>
+        <polygon points="60,80 380,40 420,180 100,220" fill="#FDD835"/>
+        <polygon points="60,80 380,40 420,180 100,220" fill="url(#cTop)"/>
+        <polygon points="80,90 340,55 370,120 110,155" fill="rgba(255,255,255,0.22)"/>
+        <polygon points="100,220 420,180 420,290 100,330" fill="#FBC02D"/>
+        <polygon points="100,220 420,180 420,290 100,330" fill="url(#cFront)"/>
+        <line x1="110" y1="255" x2="415" y2="235" stroke="rgba(0,0,0,0.12)" stroke-width="2.5" stroke-dasharray="14,9"/>
+        <polygon points="60,80 100,220 100,330 60,190" fill="#E65100"/>
+        <polygon points="60,80 100,220 100,330 60,190" fill="url(#cSide)"/>
+        <line x1="60" y1="80" x2="380" y2="40" stroke="rgba(0,0,0,0.15)" stroke-width="2"/>
+        <line x1="380" y1="40" x2="420" y2="180" stroke="rgba(0,0,0,0.15)" stroke-width="2"/>
+        <line x1="420" y1="180" x2="420" y2="290" stroke="rgba(0,0,0,0.2)" stroke-width="2"/>
+        <line x1="100" y1="220" x2="100" y2="330" stroke="rgba(0,0,0,0.2)" stroke-width="2"/>
+        <line x1="60" y1="80" x2="60" y2="190" stroke="rgba(0,0,0,0.18)" stroke-width="2"/>
+        <line x1="60" y1="190" x2="100" y2="330" stroke="rgba(0,0,0,0.18)" stroke-width="2"/>
+        <line x1="100" y1="330" x2="420" y2="290" stroke="rgba(0,0,0,0.18)" stroke-width="2"/>
+        <circle cx="60" cy="80" r="10" fill="#FFF176" opacity="0.6"/>
+        <circle cx="380" cy="40" r="10" fill="#FFF176" opacity="0.6"/>
+        <circle cx="420" cy="290" r="10" fill="#FBC02D" opacity="0.5"/>
+        <circle cx="100" cy="330" r="10" fill="#FBC02D" opacity="0.5"/>
+        </g>
+      </svg>
+      <svg id="svg-bolaazul" style="display:none" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="gBall" cx="34%" cy="28%" r="70%">
+            <stop offset="0%"   stop-color="#6699FF"/>
+            <stop offset="25%"  stop-color="#1133CC"/>
+            <stop offset="60%"  stop-color="#0022AA"/>
+            <stop offset="100%" stop-color="#000E5A"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="200" cy="392" rx="148" ry="13" fill="rgba(0,0,0,0.4)"/>
+        <circle cx="200" cy="196" r="182" fill="#1133CC"/>
+        <circle cx="200" cy="196" r="182" fill="url(#gBall)"/>
+        <ellipse cx="148" cy="108" rx="78" ry="44" fill="rgba(255,255,255,0.28)" transform="rotate(-30,148,108)"/>
+        <ellipse cx="110" cy="78" rx="34" ry="18" fill="rgba(255,255,255,0.22)" transform="rotate(-30,110,78)"/>
+        <circle cx="128" cy="92" r="10" fill="rgba(255,255,255,0.35)"/>
+      </svg>
+      <svg id="svg-bolabranca" style="display:none" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="gW2" cx="35%" cy="28%" r="72%">
+            <stop offset="0%"   stop-color="#FFFFFF"/>
+            <stop offset="50%"  stop-color="#F0F0F0"/>
+            <stop offset="100%" stop-color="#C8C8C8"/>
+          </radialGradient>
+          <clipPath id="circ">
+            <circle cx="200" cy="200" r="182"/>
+          </clipPath>
+        </defs>
+        <ellipse cx="200" cy="392" rx="148" ry="13" fill="rgba(0,0,0,0.35)"/>
+        <circle cx="200" cy="200" r="182" fill="#F0F0F0"/>
+        <circle cx="200" cy="200" r="182" fill="url(#gW2)"/>
+        <g clip-path="url(#circ)">
+          <polygon points="200,28 248,72 228,130 172,130 152,72" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+          <polygon points="200,172 248,208 230,266 170,266 152,208" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+          <polygon points="50,110 108,90 130,148 88,188 38,162" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+          <polygon points="350,110 362,162 312,188 270,148 292,90" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+          <polygon points="30,238 80,218 118,268 96,326 36,314" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+          <polygon points="370,238 364,314 304,326 282,268 320,218" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+          <polygon points="200,344 156,314 162,268 238,268 244,314" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+        </g>
+        <circle cx="200" cy="200" r="182" fill="none" stroke="#CCCCCC" stroke-width="3"/>
+        <ellipse cx="148" cy="130" rx="54" ry="30" fill="rgba(255,255,255,0.55)" transform="rotate(-25,148,130)"/>
+        <ellipse cx="122" cy="108" rx="22" ry="12" fill="rgba(255,255,255,0.4)" transform="rotate(-25,122,108)"/>
+      </svg>
+    </div>
     <div id="equip-label"></div>
     <div id="equip-acao"></div>
   </div>
@@ -112,93 +194,6 @@ body.immersive #equip-acao { display: none; }
 <div id="toast"></div>
 
 <script>
-var SVGS = {
-
-colchao: `<svg viewBox="0 0 360 440" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="cTop" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FFF176"/>
-      <stop offset="100%" stop-color="#FDD835"/>
-    </linearGradient>
-    <linearGradient id="cSide" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#F9A825"/>
-      <stop offset="100%" stop-color="#E65100"/>
-    </linearGradient>
-    <linearGradient id="cFront" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFEE58"/>
-      <stop offset="100%" stop-color="#FBC02D"/>
-    </linearGradient>
-  </defs>
-  <g transform="translate(360,0) rotate(90)">
-  <ellipse cx="240" cy="348" rx="175" ry="14" fill="rgba(0,0,0,0.35)"/>
-  <polygon points="60,80 380,40 420,180 100,220" fill="#FDD835"/>
-  <polygon points="60,80 380,40 420,180 100,220" fill="url(#cTop)"/>
-  <polygon points="80,90 340,55 370,120 110,155" fill="rgba(255,255,255,0.22)"/>
-  <polygon points="100,220 420,180 420,290 100,330" fill="#FBC02D"/>
-  <polygon points="100,220 420,180 420,290 100,330" fill="url(#cFront)"/>
-  <line x1="110" y1="255" x2="415" y2="235" stroke="rgba(0,0,0,0.12)" stroke-width="2.5" stroke-dasharray="14,9"/>
-  <polygon points="60,80 100,220 100,330 60,190" fill="#E65100"/>
-  <polygon points="60,80 100,220 100,330 60,190" fill="url(#cSide)"/>
-  <line x1="60" y1="80" x2="380" y2="40" stroke="rgba(0,0,0,0.15)" stroke-width="2"/>
-  <line x1="380" y1="40" x2="420" y2="180" stroke="rgba(0,0,0,0.15)" stroke-width="2"/>
-  <line x1="420" y1="180" x2="420" y2="290" stroke="rgba(0,0,0,0.2)" stroke-width="2"/>
-  <line x1="100" y1="220" x2="100" y2="330" stroke="rgba(0,0,0,0.2)" stroke-width="2"/>
-  <line x1="60" y1="80" x2="60" y2="190" stroke="rgba(0,0,0,0.18)" stroke-width="2"/>
-  <line x1="60" y1="190" x2="100" y2="330" stroke="rgba(0,0,0,0.18)" stroke-width="2"/>
-  <line x1="100" y1="330" x2="420" y2="290" stroke="rgba(0,0,0,0.18)" stroke-width="2"/>
-  <circle cx="60" cy="80" r="10" fill="#FFF176" opacity="0.6"/>
-  <circle cx="380" cy="40" r="10" fill="#FFF176" opacity="0.6"/>
-  <circle cx="420" cy="290" r="10" fill="#FBC02D" opacity="0.5"/>
-  <circle cx="100" cy="330" r="10" fill="#FBC02D" opacity="0.5"/>
-  </g>
-</svg>`,
-
-bolaazul: `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="gBall" cx="34%" cy="28%" r="70%">
-      <stop offset="0%"   stop-color="#6699FF"/>
-      <stop offset="25%"  stop-color="#1133CC"/>
-      <stop offset="60%"  stop-color="#0022AA"/>
-      <stop offset="100%" stop-color="#000E5A"/>
-    </radialGradient>
-  </defs>
-  <ellipse cx="200" cy="392" rx="148" ry="13" fill="rgba(0,0,0,0.4)"/>
-  <circle cx="200" cy="196" r="182" fill="#1133CC"/>
-  <circle cx="200" cy="196" r="182" fill="url(#gBall)"/>
-  <ellipse cx="148" cy="108" rx="78" ry="44" fill="rgba(255,255,255,0.28)" transform="rotate(-30,148,108)"/>
-  <ellipse cx="110" cy="78" rx="34" ry="18" fill="rgba(255,255,255,0.22)" transform="rotate(-30,110,78)"/>
-  <circle cx="128" cy="92" r="10" fill="rgba(255,255,255,0.35)"/>
-</svg>`,
-
-bolabranca: `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="gW2" cx="35%" cy="28%" r="72%">
-      <stop offset="0%"   stop-color="#FFFFFF"/>
-      <stop offset="50%"  stop-color="#F0F0F0"/>
-      <stop offset="100%" stop-color="#C8C8C8"/>
-    </radialGradient>
-    <clipPath id="circ">
-      <circle cx="200" cy="200" r="182"/>
-    </clipPath>
-  </defs>
-  <ellipse cx="200" cy="392" rx="148" ry="13" fill="rgba(0,0,0,0.35)"/>
-  <circle cx="200" cy="200" r="182" fill="#F0F0F0"/>
-  <circle cx="200" cy="200" r="182" fill="url(#gW2)"/>
-  <g clip-path="url(#circ)">
-    <polygon points="200,28 248,72 228,130 172,130 152,72" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
-    <polygon points="200,172 248,208 230,266 170,266 152,208" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
-    <polygon points="50,110 108,90 130,148 88,188 38,162" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
-    <polygon points="350,110 362,162 312,188 270,148 292,90" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
-    <polygon points="30,238 80,218 118,268 96,326 36,314" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
-    <polygon points="370,238 364,314 304,326 282,268 320,218" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
-    <polygon points="200,344 156,314 162,268 238,268 244,314" fill="#111" stroke="white" stroke-width="6" stroke-linejoin="round"/>
-  </g>
-  <circle cx="200" cy="200" r="182" fill="none" stroke="#CCCCCC" stroke-width="3"/>
-  <ellipse cx="148" cy="130" rx="54" ry="30" fill="rgba(255,255,255,0.55)" transform="rotate(-25,148,130)"/>
-  <ellipse cx="122" cy="108" rx="22" ry="12" fill="rgba(255,255,255,0.4)" transform="rotate(-25,122,108)"/>
-</svg>`
-};
-
 var EQUIPS = [
   { id:'colchao',    label:'COLCHÃO',     acao:'Role no colchão!',  bg:'#1A1200', freq:196, tipo:'triangle', dur:0.42 },
   { id:'bolaazul',   label:'BOLA AZUL',   acao:'Pedale na bola!',   bg:'#000D2A', freq:262, tipo:'triangle', dur:0.4  },
@@ -302,8 +297,9 @@ function trocar() {
   var prox; do { prox = Math.floor(Math.random() * EQUIPS.length); } while (prox === atual);
   atual = prox; var eq = EQUIPS[atual];
   elBody.style.background = eq.bg;
-  elSVG.innerHTML = SVGS[eq.id];
-  elSVG.style.display = 'none'; void elSVG.offsetHeight; elSVG.style.display = '';
+  var svgs = elSVG.querySelectorAll('svg');
+  for (var i = 0; i < svgs.length; i++) { svgs[i].style.display = 'none'; }
+  document.getElementById('svg-' + eq.id).style.display = '';
   elLabel.textContent = eq.label;
   elAcao.textContent = eq.acao;
   tocar(eq);
