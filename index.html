@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- BUILD: 2026-08-04-v10 -->
+<!-- BUILD: 2026-08-04-v11 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -43,8 +43,8 @@ body.immersive #topbar { opacity: 0; pointer-events: none; transform: translateY
 #btn-iniciar:active { transform: scale(0.96); }
 #equip-card { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 100%; min-height: 0; }
 #equip-card.visible { display: flex; }
-#equip-svg-wrap { flex: 1 1 auto; width: 100%; min-height: 0; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 16px 48px rgba(0,0,0,0.55)); }
-#equip-svg-wrap svg { max-width: 100%; max-height: 100%; width: auto; height: auto; }
+#equip-svg-wrap { flex: 1 1 auto; width: 100%; min-height: 30vh; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 16px 48px rgba(0,0,0,0.55)); }
+#equip-svg-wrap svg { max-width: 100%; max-height: 100%; width: 100%; height: 100%; }
 #equip-label { flex-shrink: 0; font-size: clamp(28px, 9vw, 84px); font-weight: 900; color: rgba(255,255,255,0.95); letter-spacing: 2px; text-transform: uppercase; text-align: center; text-shadow: 0 2px 16px rgba(0,0,0,0.4); }
 #equip-acao { flex-shrink: 0; font-size: clamp(14px, 3.2vw, 22px); font-weight: 700; color: rgba(255,255,255,0.5); text-align: center; }
 body.immersive #equip-label,
@@ -89,7 +89,7 @@ body.immersive #equip-acao { display: none; }
   </div>
   <div id="equip-card">
     <div id="equip-svg-wrap">
-      <svg id="svg-colchao" style="display:none" viewBox="0 0 360 440" xmlns="http://www.w3.org/2000/svg">
+      <svg id="svg-colchao" style="display:none" width="100%" height="100%" viewBox="0 0 360 440" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="cTop" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#FFF176"/>
@@ -127,7 +127,7 @@ body.immersive #equip-acao { display: none; }
         <circle cx="100" cy="330" r="10" fill="#FBC02D" opacity="0.5"/>
         </g>
       </svg>
-      <svg id="svg-bolaazul" style="display:none" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <svg id="svg-bolaazul" style="display:none" width="100%" height="100%" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <radialGradient id="gBall" cx="34%" cy="28%" r="70%">
             <stop offset="0%"   stop-color="#6699FF"/>
@@ -143,7 +143,7 @@ body.immersive #equip-acao { display: none; }
         <ellipse cx="110" cy="78" rx="34" ry="18" fill="rgba(255,255,255,0.22)" transform="rotate(-30,110,78)"/>
         <circle cx="128" cy="92" r="10" fill="rgba(255,255,255,0.35)"/>
       </svg>
-      <svg id="svg-bolabranca" style="display:none" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <svg id="svg-bolabranca" style="display:none" width="100%" height="100%" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <radialGradient id="gW2" cx="35%" cy="28%" r="72%">
             <stop offset="0%"   stop-color="#FFFFFF"/>
