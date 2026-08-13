@@ -28,8 +28,8 @@ body { display: flex; flex-direction: column; background: #111; transition: back
 }
 body.immersive #topbar { opacity: 0; pointer-events: none; transform: translateY(-100%); }
 .lbl { font-size: 13px; font-weight: 800; color: rgba(255,255,255,0.6); min-width: 22px; text-align: center; }
-#slider { flex: 1; height: 7px; border-radius: 10px; -webkit-appearance: none; appearance: none; background: rgba(255,255,255,0.25); outline: none; }
-#slider::-webkit-slider-thumb { -webkit-appearance: none; width: 34px; height: 34px; border-radius: 50%; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+.stepBtn { width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(255,255,255,0.15); color: #fff; font-size: 20px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; -webkit-appearance: none; appearance: none; }
+.stepBtn:active { background: rgba(255,255,255,0.3); transform: scale(0.92); }
 #speed-display { font-size: 20px; font-weight: 900; color: #fff; min-width: 40px; text-align: center; }
 .icon-btn { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; font-size: 18px; }
 .icon-btn:active { transform: scale(0.92); }
@@ -71,9 +71,9 @@ body.immersive #equip-acao { display: none; }
 </head>
 <body>
 <div id="topbar">
-  <span class="lbl">1s</span>
-  <input type="range" id="slider" min="1" max="10" value="3" step="1">
+  <button class="stepBtn" id="spdMinus">−</button>
   <span id="speed-display">3s</span>
+  <button class="stepBtn" id="spdPlus">+</button>
   <div id="btn-fullscreen" class="icon-btn">⛶</div>
   <div id="btn-settings" class="icon-btn">⚙️</div>
   <div id="btn-parar">
@@ -277,7 +277,7 @@ function liberarWakeLock() {
   if (wakeLock) { try { wakeLock.release(); } catch(e) {} wakeLock = null; }
 }
 
-var elBody=document.body, elSlider=document.getElementById('slider'),
+var elBody=document.body, elSpdMinus=document.getElementById('spdMinus'), elSpdPlus=document.getElementById('spdPlus'),
     elSpeed=document.getElementById('speed-display'), elParar=document.getElementById('btn-parar'),
     elIniciar=document.getElementById('btn-iniciar'), elIdle=document.getElementById('idle'),
     elCard=document.getElementById('equip-card'), elSVG=document.getElementById('equip-svg-wrap'),
@@ -289,10 +289,37 @@ var elBody=document.body, elSlider=document.getElementById('slider'),
 
 elChkWakelock.checked = manterTela;
 
-elSlider.addEventListener('input', function() {
-  elSpeed.textContent = elSlider.value + 's';
-  if (rodando) { clearInterval(timer); timer = setInterval(trocar, elSlider.value * 1000); }
-});
+var SPD_MIN = 1, SPD_MAX = 10;
+var spdValue = 3;
+
+function renderSpd() {
+  elSpeed.textContent = spdValue + 's';
+  if (rodando) { clearInterval(timer); timer = setInterval(trocar, spdValue * 1000); }
+  if (navigator.vibrate) navigator.vibrate(8);
+}
+function changeSpd(delta) {
+  spdValue = Math.min(SPD_MAX, Math.max(SPD_MIN, spdValue + delta));
+  renderSpd();
+}
+function setupHold(btn, delta) {
+  var interval = null, timeout = null;
+  function start(e) {
+    e.preventDefault();
+    changeSpd(delta);
+    timeout = setTimeout(function() {
+      interval = setInterval(function() { changeSpd(delta); }, 250);
+    }, 400);
+  }
+  function stop() { clearTimeout(timeout); clearInterval(interval); }
+  btn.addEventListener('touchstart', start, {passive:false});
+  btn.addEventListener('touchend', stop);
+  btn.addEventListener('touchcancel', stop);
+  btn.addEventListener('mousedown', start);
+  btn.addEventListener('mouseup', stop);
+  btn.addEventListener('mouseleave', stop);
+}
+setupHold(elSpdMinus, -1);
+setupHold(elSpdPlus, 1);
 function trocar() {
   var prox; do { prox = Math.floor(Math.random() * EQUIPS.length); } while (prox === atual);
   atual = prox; var eq = EQUIPS[atual];
@@ -308,7 +335,7 @@ function iniciar() {
   desbloquearAudio();
   rodando = true;
   elIdle.style.display = 'none'; elCard.classList.add('visible');
-  trocar(); timer = setInterval(trocar, elSlider.value * 1000);
+  trocar(); timer = setInterval(trocar, spdValue * 1000);
   pedirWakeLock();
 }
 function parar() {
