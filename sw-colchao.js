@@ -1,6 +1,6 @@
 // Service Worker do BSA Colchão — guarda o app em cache para funcionar sem internet.
 // Só busca conteúdo novo quando o usuário toca em "Atualizar" no BSA APP (Hub) ou em "Verificar atualização" aqui.
-var CACHE_NAME = 'bsa-colchao-cache-v2';
+var CACHE_NAME = 'bsa-colchao-cache-v3';
 var PREFIX = 'bsa-colchao-cache-';
 // Arquivos do próprio app do Colchão — tudo que é preciso pra abrir e funcionar sem internet.
 var ARQUIVOS_PRECACHE = ['./', 'index.html', 'sw-colchao.js'];
@@ -33,7 +33,10 @@ self.addEventListener('fetch', function(event) {
         var copy = resp.clone();
         caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, copy); });
         return resp;
-      }).catch(function() { return cached; });
+      }).catch(function() {
+        if (event.request.mode === 'navigate') return caches.match('index.html');
+        return cached;
+      });
     })
   );
 });
