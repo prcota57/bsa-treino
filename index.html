@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- BUILD: 2026-08-04-v11 -->
+<!-- BUILD: 2026-08-29-v12 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -41,12 +41,18 @@ body.immersive #topbar { opacity: 0; pointer-events: none; transform: translateY
 #idle-sub { font-size: 15px; color: rgba(255,255,255,0.4); font-weight: 500; }
 #btn-iniciar { margin-top: 8px; width: 200px; height: 64px; border-radius: 32px; background: #fff; border: none; outline: none; font-size: 22px; font-weight: 900; color: #111; cursor: pointer; -webkit-appearance: none; appearance: none; }
 #btn-iniciar:active { transform: scale(0.96); }
-#equip-card { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 100%; min-height: 0; }
+#equip-card { position: relative; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 100%; min-height: 0; }
 #equip-card.visible { display: flex; }
-#equip-svg-wrap { flex: 1 1 auto; width: 100%; min-height: 30vh; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 16px 48px rgba(0,0,0,0.55)); }
+#nivel-watermark {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  font-size: min(52vw, 60vh); font-weight: 900; color: rgba(255,255,255,0.16);
+  line-height: 1; pointer-events: none; user-select: none; z-index: 0;
+  text-shadow: 0 0 40px rgba(0,0,0,0.25);
+}
+#equip-svg-wrap { position: relative; z-index: 1; flex: 1 1 auto; width: 100%; min-height: 30vh; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 16px 48px rgba(0,0,0,0.55)); }
 #equip-svg-wrap svg { max-width: 100%; max-height: 100%; width: 100%; height: 100%; }
-#equip-label { flex-shrink: 0; font-size: clamp(28px, 9vw, 84px); font-weight: 900; color: rgba(255,255,255,0.95); letter-spacing: 2px; text-transform: uppercase; text-align: center; text-shadow: 0 2px 16px rgba(0,0,0,0.4); }
-#equip-acao { flex-shrink: 0; font-size: clamp(14px, 3.2vw, 22px); font-weight: 700; color: rgba(255,255,255,0.5); text-align: center; }
+#equip-label { position: relative; z-index: 1; flex-shrink: 0; font-size: clamp(28px, 9vw, 84px); font-weight: 900; color: rgba(255,255,255,0.95); letter-spacing: 2px; text-transform: uppercase; text-align: center; text-shadow: 0 2px 16px rgba(0,0,0,0.4); }
+#equip-acao { position: relative; z-index: 1; flex-shrink: 0; font-size: clamp(14px, 3.2vw, 22px); font-weight: 700; color: rgba(255,255,255,0.5); text-align: center; }
 body.immersive #equip-label,
 body.immersive #equip-acao { display: none; }
 
@@ -88,6 +94,7 @@ body.immersive #equip-acao { display: none; }
     <button id="btn-iniciar" type="button">INICIAR</button>
   </div>
   <div id="equip-card">
+    <div id="nivel-watermark"></div>
     <div id="equip-svg-wrap">
       <svg id="svg-colchao" style="display:none" width="100%" height="100%" viewBox="0 0 360 440" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -285,20 +292,25 @@ var elBody=document.body, elSpdMinus=document.getElementById('spdMinus'), elSpdP
     elFullscreen=document.getElementById('btn-fullscreen'), elSettingsBtn=document.getElementById('btn-settings'),
     elSettingsOverlay=document.getElementById('settings-overlay'), elFecharSettings=document.getElementById('btn-fechar-settings'),
     elChkWakelock=document.getElementById('chk-wakelock'), elTestarSom=document.getElementById('btn-testar-som'),
-    elAtualizar=document.getElementById('btn-atualizar');
+    elAtualizar=document.getElementById('btn-atualizar'), elWatermark=document.getElementById('nivel-watermark');
 
 elChkWakelock.checked = manterTela;
 
-var SPD_MIN = 1, SPD_MAX = 10;
+var SPD_MIN = 1, SPD_MAX = 10, SPD_STEP = 0.5;
 var spdValue = 3;
 
+function fmtSpd(v) {
+  return (Math.round(v * 10) % 10 === 0) ? String(Math.round(v)) : v.toFixed(1).replace('.', ',');
+}
 function renderSpd() {
-  elSpeed.textContent = spdValue + 's';
+  elSpeed.textContent = fmtSpd(spdValue) + 's';
+  elWatermark.textContent = fmtSpd(spdValue);
   if (rodando) { clearInterval(timer); timer = setInterval(trocar, spdValue * 1000); }
   if (navigator.vibrate) navigator.vibrate(8);
 }
 function changeSpd(delta) {
-  spdValue = Math.min(SPD_MAX, Math.max(SPD_MIN, spdValue + delta));
+  spdValue = Math.round((spdValue + delta) * 10) / 10;
+  spdValue = Math.min(SPD_MAX, Math.max(SPD_MIN, spdValue));
   renderSpd();
 }
 function setupHold(btn, delta) {
@@ -318,8 +330,10 @@ function setupHold(btn, delta) {
   btn.addEventListener('mouseup', stop);
   btn.addEventListener('mouseleave', stop);
 }
-setupHold(elSpdMinus, -1);
-setupHold(elSpdPlus, 1);
+setupHold(elSpdMinus, -SPD_STEP);
+setupHold(elSpdPlus, SPD_STEP);
+elSpeed.textContent = fmtSpd(spdValue) + 's';
+elWatermark.textContent = fmtSpd(spdValue);
 function trocar() {
   var prox; do { prox = Math.floor(Math.random() * EQUIPS.length); } while (prox === atual);
   atual = prox; var eq = EQUIPS[atual];
