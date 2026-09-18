@@ -77,6 +77,7 @@ body.immersive #equip-acao { display: none; }
 </head>
 <body>
 <div id="topbar">
+  <div id="btn-hub" class="icon-btn" aria-label="Voltar ao Hub" title="Voltar ao Hub">←</div>
   <button class="stepBtn" id="spdMinus">−</button>
   <span id="speed-display">3s</span>
   <button class="stepBtn" id="spdPlus">+</button>
@@ -432,9 +433,13 @@ function sairApp() {
       else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
     } else if (window.history.length > 1) {
       window.history.back();
+    } else {
+      window.location.href = 'https://prcota57.github.io/BSA-cadastro/';
     }
   }, 450);
 }
+document.getElementById('btn-hub').addEventListener('click', sairApp);
+
 document.addEventListener('click', function(e) {
   if (isControle(e.target)) return;
   var now = Date.now();
